@@ -1,0 +1,26 @@
+@Test
+public void testPaymentProcessing() {
+
+    // Set the base URL for the API
+    RestAssured.baseURI = "http://your-api-url.com";
+
+    // Define the request body for the payment
+    JSONObject paymentRequest = new JSONObject();
+    paymentRequest.put("amount", 100);
+    paymentRequest.put("currency", "USD");
+    paymentRequest.put("cardNumber", "4111111111111111");
+    paymentRequest.put("expiryMonth", "01");
+    paymentRequest.put("expiryYear", "2024");
+    paymentRequest.put("cvv", "123");
+
+    // Send the payment request and verify the response
+    given()
+        .contentType(ContentType.JSON)
+        .body(paymentRequest.toJSONString())
+    .when()
+        .post("/payments")
+    .then()
+        .statusCode(200)
+        .body("status", equalTo("success"))
+        .body("message", equalTo("Payment processed successfully"));
+}
